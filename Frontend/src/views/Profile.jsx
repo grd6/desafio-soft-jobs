@@ -7,17 +7,19 @@ import { ENDPOINT } from "../config/constans";
 const Profile = () => {
   const navigate = useNavigate();
   const { getDeveloper, setDeveloper } = useContext(Context);
-
+console.log(setDeveloper)
   const getDeveloperData = () => {
     const token = window.sessionStorage.getItem("token");
     axios
       .get(ENDPOINT.users, { headers: { Authorization: `Bearer ${token}` } })
-      .then(({ data: { user } }) => setDeveloper({ ...user }))
-      .catch(({ response: [data]   }) => {
+      .then(({ data: user }) =>   setDeveloper({ ...user })) 
+      
+      .catch(({ response: [data] }) => {
         window.sessionStorage.removeItem("token");
         setDeveloper(null);
         navigate("/");
       });
+      
   };
 
   useEffect(getDeveloperData, []);
@@ -28,12 +30,11 @@ const Profile = () => {
         Bienvenido <span className="fw-bold">{getDeveloper?.email}</span>
       </h1>
       <h3>
-        {getDeveloper?.rol} en {getDeveloper?.lenguage}
+      {getDeveloper?.users[0]?.rol} en {getDeveloper?.users[0]?.lenguage}
+      
       </h3>
     </div>
   );
 };
 
 export default Profile;
-
-
